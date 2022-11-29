@@ -1,0 +1,32 @@
+version: "3.8"
+services:
+  todo-db:
+    image: diamol/postgres:11.5
+    restart: always
+    volumes:
+        - todo-db:/var/lib/postgresql/data
+    environment:
+        - POSTGRES_USER=postgres
+        - POSTGRES_PASSWORD=postgres
+        - POSTGRES_DB=todo
+
+  todo-web:
+    image: diamol/ch06-todo-list:latest
+    restart: always
+    ports:
+      - "7080:80"
+    environment:
+      - Database:Provider=Postgres
+    depends_on:
+      - todo-db
+    secrets:
+      - source: postgres-connection
+        target: /app/config/secrets.json
+
+volumes:
+    todo-db:
+        driver: local
+
+secrets:
+    postgres-connection:
+        file: ./config/secrets.json
