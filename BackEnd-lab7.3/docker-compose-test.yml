@@ -14,7 +14,7 @@ services:
     image: diamol/ch06-todo-list:latest
     restart: always
     ports:
-      - "7080:80"
+      - "8080:80"
     environment:
       - Database:Provider=Postgres
     depends_on:
